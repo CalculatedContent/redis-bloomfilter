@@ -11,7 +11,7 @@ spec = Gem::Specification.new do |s|
 
   s.add_dependency "redis", ">=3.0.3"   
   s.add_dependency "hiredis", "~> 0.4.5"
-  s.add_dependency "cityhash"
+  s.add_dependency "cityhash", "~> 0.7.0"
 
   s.add_development_dependency "rake", ">=10.0.0"
   s.add_development_dependency "rspec", ">=2.12.0"
