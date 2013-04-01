@@ -1,7 +1,7 @@
 require 'set'
 require 'redis-bloomfilter'
 
-items = 1_000_00
+items = 100_000
 bits = 1
 
 # p BloomFilter::Redis.new(:size => items*bits, :hashes => 7) # 2.5 mb
@@ -11,11 +11,11 @@ bits = 1
 # 1%   error rate for 5M items/day, 10 bits per item, for 30 days of data: 358.52 mb
 # 0.1% error rate for 5M items/day, 15 bits per item, for 30 days of data: 537.33 mb
 
-bf = RedisBloomFilter::Redis.new(:size => items*bits, :hashes => 7) # 2.5 mb
+bf = RedisBloomFilter::Redis.new(:size => items*bits*5, :hashes => 7) # 2.5 mb
 
 seen = Set.new
 err = 0
-num = 100000
+num = 10_000
 
 num.times do
   item = rand(items)
