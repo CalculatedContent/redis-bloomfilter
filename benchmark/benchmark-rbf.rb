@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'benchmark'
 require 'redis'
-require 'redis-bloomfilter'
+
 require 'trollop'
 require "hiredis"
 require "em-synchrony"
@@ -11,7 +11,11 @@ opts = Trollop::options do
   opt :repeats, "num repeats", :default => 100
   opt :host, "host for bloomfilter", :default => 'localhost'
   opt :driver, "driver for test", :default => ""
+  opt :bloomfilter, "bloomfilter gem to test", :default => "redis-bloomfilter"
 end
+
+require opts[:bloomfilter]
+
 
 
 redis_opts = { :host => opts[:host] } 
@@ -24,10 +28,15 @@ num = opts[:num]
 num_included = num / opts[:repeats]
 keys = []
 
-puts "driver = #{opts[:driver]}"
+puts "bloomfilter = #{opts[:bloomfilter]}  driver = #{opts[:driver]}  num = #{opts[:num]}  repeats = #{opts[:repeats]}"
 
 Benchmark.bm do |x|
-  r = RedisBloomFilter::Redis.new(:db => redis)
+  r = if opts[:bloomfilter]=="redis-bloomfilter" then
+     RedisBloomFilter::Redis.new(:db => redis)
+   elsif opts[:bloomfilter]=="bloomfilter-rb" then
+     BloomFilter::Redis.new(:db => redis)
+   end
+     
 
   x.report("insert") do
     num.times do
