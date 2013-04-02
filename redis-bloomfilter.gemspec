@@ -15,6 +15,8 @@ spec = Gem::Specification.new do |s|
 
   s.add_development_dependency "rake", ">=10.0.0"
   s.add_development_dependency "rspec", ">=2.12.0"
+  s.add_development_dependency "eventmachine"
+  s.add_development_dependency "em-synchrony"
 
 
   s.files = %w[
